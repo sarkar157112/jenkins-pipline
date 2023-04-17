@@ -1,23 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        GIT_CREDENTIALS = 'git-credentials'
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building the application...'
-                // Add your build steps here
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                // Add your test steps here
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the application...'
-                // Add your deployment steps here
+                echo 'Checking out the repository...'
+                git branch: 'teshla', credentialsId: 'githubcreds', url: 'https://github.com/sarkar157112/jenkins-pipline.git'
             }
         }
     }
