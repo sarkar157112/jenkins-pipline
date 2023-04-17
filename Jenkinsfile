@@ -3,7 +3,10 @@ pipeline {
 
     environment {
         GIT_CREDENTIALS = 'git-credentials'
+        DOCKER_USERNAME = '157112'
     }
+  
+
 
     stages {
         stage('Checkout') {
