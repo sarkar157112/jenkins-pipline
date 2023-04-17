@@ -24,7 +24,8 @@ pipeline {
                     def timeStamp = new Date().format("yyyyMMddHHmmss")
                     def imageTag = "v${timeStamp}"
 
-                    withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+                    //withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
+                    withDockerRegistry(credentialsId: 'DockerHubN', url: 'https://hub.docker.com/') {
                         def dockerImage = docker.build("${DOCKER_USERNAME}/${imageName}:${imageTag}", '.')
                         dockerImage.push()
                     }
