@@ -17,7 +17,7 @@ pipeline {
                 echo 'Building and pushing the Docker image...'
                 script {
                     // Replace 'your_image_name' with your desired image name and './Dockerfile' with the path to your Dockerfile
-                    def imageName = 'your_image_name'
+                    def imageName = 'nginx-app'
                     def timeStamp = new Date().format("yyyyMMddHHmmss")
                     def imageTag = "v${timeStamp}"
 
