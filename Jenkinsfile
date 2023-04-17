@@ -22,7 +22,7 @@ pipeline {
                     def imageTag = "v${timeStamp}"
 
                     withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
-                        def dockerImage = docker.build("${DOCKER_USERNAME}/${imageName}:${imageTag}", './Dockerfile')
+                        def dockerImage = docker.build("${DOCKER_USERNAME}/${imageName}:${imageTag}")
                         dockerImage.push()
                     }
                 }
