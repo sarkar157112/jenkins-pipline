@@ -9,3 +9,5 @@ COPY ./my-nginx.conf /etc/nginx/conf.d/my-nginx.conf
 
 # Copy your application files into the Nginx container
 COPY ./public-html/ /usr/share/nginx/html/
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
