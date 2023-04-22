@@ -1,10 +1,10 @@
 pipeline {
     agent any
-
     environment {
-        GIT_CREDENTIALS = 'git-credentials'
         DOCKER_USERNAME = '157112'
     }
+
+
   
 
 
@@ -12,10 +12,10 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out the repository...'
-                git branch: 'teshla', credentialsId: 'githubcreds', url: 'https://github.com/sarkar157112/jenkins-pipline.git'
+                 checkout scmGit(branches: [[name: '*/teshla']], extensions: [], userRemoteConfigs: [[credentialsId: 'github_credentials', url: 'https://github.com/sarkar157112/jenkins-pipline.git']])
             }
         }
-        stage('Build and Push Docker Image') {
+           stage('Build and Push Docker Image') {
             steps {
                 echo 'Building and pushing the Docker image...'
                 script {
@@ -25,7 +25,7 @@ pipeline {
                     def imageTag = "v${timeStamp}"
 
                     //withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/') {
-                    withDockerRegistry(credentialsId: 'DockerHubN', url: 'https://hub.docker.com/') {
+                   withDockerRegistry(credentialsId: 'docker-credentials') {
                         def dockerImage = docker.build("${DOCKER_USERNAME}/${imageName}:${imageTag}", '.')
                         dockerImage.push()
                     }
