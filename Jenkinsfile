@@ -1,7 +1,7 @@
 pipeline {
     agent any
     options {
-        throttleConcurrentBuilds(throttlePerProject(1))
+        disableConcurrentBuilds()
         quietPeriod(60)
     }
     environment {
