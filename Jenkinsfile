@@ -64,16 +64,18 @@ pipeline {
                         def dockerImage = docker.image("${DOCKER_USERNAME}/${imageName}:${imageTag}")
                         dockerImage.pull()
 
-                        // Check if port 80 is already in use
+                       /* // Check if port 80 is already in use
                         def portCheck = sh(returnStatus: true, script: "lsof -i :80 | grep -q 'LISTEN'")
                         if (portCheck == 0) {
                             error("Port 80 is already in use. Please stop the process using port 80 and try again.")
-                        }
+                        }*/
 
                         // Stop and remove any containers using the same image
                         sh "docker ps -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker stop"
-                        sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
 
+                        sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
+                        // Wait for 30 seconds
+                        sh "sleep 30"
                         sh "docker run -d -p 8090:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
                     }
                 }
