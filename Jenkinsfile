@@ -71,11 +71,12 @@ pipeline {
                         }*/
 
                         // Stop and remove any containers using the same image
-                        sh "docker ps -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker stop"
+                        sh "docker ps -a | grep ${DOCKER_USERNAME}/${imageName} | awk '{ print $1 }' | xargs  -r docker stop"
+                        sh "docker ps -a | grep ${DOCKER_USERNAME}/${imageName} | awk '{ print $1 }' | xargs  -r docker rm" 
 
-                        sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
+                        //sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
                         // Wait for 30 seconds
-                        sh "sleep 30"
+                        sh "sleep 05"
                         sh "docker run -d -p 8090:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
                     }
                 }
