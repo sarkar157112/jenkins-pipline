@@ -15,6 +15,13 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/teshla']], extensions: [], userRemoteConfigs: [[credentialsId: 'github_credentials', url: 'https://github.com/sarkar157112/jenkins-pipline.git']])
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv(credentialsId: 'sonarqubetoken') {
+                    sh 'sonar-scanner'
+                }
+            }
+        }
 
         stage('Build and Push Docker Image') {
             steps {
