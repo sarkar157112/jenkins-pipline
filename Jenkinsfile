@@ -40,8 +40,8 @@ pipeline {
                         def dockerImage = docker.image("${DOCKER_USERNAME}/${imageName}:${imageTag}")
                         dockerImage.pull()
 
-                        sh "docker stop \$(docker ps -q --filter ancestor=${DOCKER_USERNAME}/${imageName}) || true"
-                        sh "docker rm \$(docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName}) || true"
+                        sh "docker stop \$(docker ps -q --filter ancestor=${DOCKER_USERNAME}/${imageName}) --filter publish=80) || true"
+                        sh "docker rm \$(docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName}) --filter publish=80) || true"
                         sh "docker run -d -p 80:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
                     }
                 }
