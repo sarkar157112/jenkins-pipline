@@ -2,7 +2,7 @@ pipeline {
     agent any
     options {
         disableConcurrentBuilds()
-        quietPeriod(60)
+        //quietPeriod(60)
     }
     environment {
         DOCKER_USERNAME = '157112'
