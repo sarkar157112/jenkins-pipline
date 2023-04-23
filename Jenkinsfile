@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        /*stage('Deploy') {
             steps {
                 echo 'Deploying the Docker image...'
                 script {
@@ -45,6 +45,35 @@ pipeline {
 
                         // Remove any stopped containers using the same image and port
                         sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
+                        sh "docker run -d -p 80:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
+                    }
+                }
+            }
+        }
+    }
+}
+*/
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the Docker image...'
+                script {
+                    def imageName = 'nginx-app'
+                    def imageTag = "v${env.timeStamp}-${env.GIT_COMMIT_SHORT}"
+
+                    withDockerRegistry(credentialsId: 'docker-credentials') {
+                        def dockerImage = docker.image("${DOCKER_USERNAME}/${imageName}:${imageTag}")
+                        dockerImage.pull()
+
+                        // Check if port 80 is already in use
+                        def portCheck = sh(returnStatus: true, script: "lsof -i :80 | grep -q 'LISTEN'")
+                        if (portCheck == 0) {
+                            error("Port 80 is already in use. Please stop the process using port 80 and try again.")
+                        }
+
+                        // Stop and remove any containers using the same image
+                        sh "docker ps -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker stop"
+                        sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
+
                         sh "docker run -d -p 80:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
                     }
                 }
