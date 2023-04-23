@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    options {
+        throttleConcurrentBuilds(throttlePerProject(1))
+        quietPeriod(60)
+    }
     environment {
         DOCKER_USERNAME = '157112'
     }
