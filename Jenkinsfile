@@ -71,8 +71,8 @@ pipeline {
                         }*/
 
                         // Stop and remove any containers using the same image
-                        sh "docker ps -a | grep=${DOCKER_USERNAME}/${imageName} | awk '{ print $1 }' | xargs  -r docker stop"
-                        sh "docker ps -a | grep=${DOCKER_USERNAME}/${imageName} | awk '{ print $1 }' | xargs  -r docker rm" 
+                        sh "docker ps -a | grep ${DOCKER_USERNAME}/${imageName} | awk '{ print \$1 }' | xargs  -r docker stop"
+                        sh "docker ps -a | grep ${DOCKER_USERNAME}/${imageName} | awk '{ print \$1 }' | xargs  -r docker rm" 
 
                         //sh "docker ps  -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} | awk '{ print \$1 }' | xargs  -r docker stop"
 
