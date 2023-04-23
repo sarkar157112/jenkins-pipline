@@ -45,7 +45,7 @@ pipeline {
 
                         // Remove any stopped containers using the same image and port
                         sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
-                        sh "docker run -d -p 80:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
+                        sh "docker run -d -p 8090:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
                     }
                 }
             }
@@ -74,7 +74,7 @@ pipeline {
                         sh "docker ps -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker stop"
                         sh "docker ps -a -q --filter ancestor=${DOCKER_USERNAME}/${imageName} --filter publish=80 | xargs -r docker rm"
 
-                        sh "docker run -d -p 80:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
+                        sh "docker run -d -p 8090:80 --restart always ${DOCKER_USERNAME}/${imageName}:${imageTag}"
                     }
                 }
             }
