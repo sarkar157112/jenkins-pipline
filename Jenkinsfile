@@ -17,10 +17,14 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    timeout(time: 3, unit: 'MINUTES') {
                 withSonarQubeEnv(installationName: 'SonarQube Server', credentialsId: 'sonarqubetoken') {
                     sh "/opt/sonar-scanner/bin/sonar-scanner"
                 }
             }
+        }
+        }
         }
 
         stage('Build and Push Docker Image') {
